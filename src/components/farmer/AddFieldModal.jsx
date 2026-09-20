@@ -165,9 +165,36 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
     }
   }, [apiKey]);
 
-  // INITIALIZE GOOGLE MAPS WHEN ACTIVE
+  // INITIALIZE GOOGLE MAPS OR LEAFLET WHEN ACTIVE & OPEN
   useEffect(() => {
-    if (!isOpen || !mapContainerRef.current) return;
+    if (!isOpen) {
+      // Clean up maps and listeners when modal is closed
+      if (googleListenersRef.current) {
+        googleListenersRef.current.forEach(listener => {
+          if (window.google?.maps?.event) {
+            window.google.maps.event.removeListener(listener);
+          }
+        });
+        googleListenersRef.current = [];
+      }
+      if (googlePolygonRef.current) {
+        googlePolygonRef.current.setMap(null);
+        googlePolygonRef.current = null;
+      }
+      googleMapRef.current = null;
+
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+        leafletPolygonRef.current = null;
+        leafletMarkersRef.current = null;
+        leafletTileRef.current = null;
+        leafletLabelsRef.current = null;
+      }
+      return;
+    }
+
+    if (!mapContainerRef.current) return;
 
     if (isGoogleMapsActive && window.google && window.google.maps) {
       // Clean up any Leaflet instance if present
@@ -195,6 +222,14 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
 
         googleListenersRef.current.push(clickListener);
         googleMapRef.current = map;
+
+        // Force a resize trigger after mount to ensure tiles render immediately
+        setTimeout(() => {
+          if (googleMapRef.current && window.google?.maps) {
+            window.google.maps.event.trigger(googleMapRef.current, 'resize');
+            googleMapRef.current.setCenter({ lat: selectedLocation.lat, lng: selectedLocation.lng });
+          }
+        }, 120);
 
         // Attach Autocomplete to Search input if available
         if (searchInputRef.current && window.google.maps.places) {
@@ -261,10 +296,41 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
         });
 
         leafletMapRef.current = map;
+
+        // Force resize trigger after mount
+        setTimeout(() => {
+          if (leafletMapRef.current) {
+            leafletMapRef.current.invalidateSize();
+          }
+        }, 120);
       } else {
         leafletMapRef.current.invalidateSize();
       }
     }
+
+    return () => {
+      // Cleanup on unmount or when modal closes
+      if (googleListenersRef.current) {
+        googleListenersRef.current.forEach(listener => {
+          if (window.google?.maps?.event) {
+            window.google.maps.event.removeListener(listener);
+          }
+        });
+        googleListenersRef.current = [];
+      }
+      if (googlePolygonRef.current) {
+        googlePolygonRef.current.setMap(null);
+        googlePolygonRef.current = null;
+      }
+      googleMapRef.current = null;
+
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+        leafletPolygonRef.current = null;
+        leafletMarkersRef.current = null;
+      }
+    };
   }, [isOpen, isGoogleMapsActive]);
 
   // SYNC POLYGON ON GOOGLE MAPS OR LEAFLET
@@ -514,6 +580,15 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
     }
   };
 
+  const handleCloseModal = () => {
+    setStep('draw');
+    setPolygonCoords([]);
+    setIsDrawingMode(false);
+    setAnalysisResult(null);
+    setAnalysisError(null);
+    onClose();
+  };
+
   const handleSaveAndFinish = () => {
     if (!analysisResult) return;
     const fieldData = {
@@ -535,7 +610,7 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
     if (onSaveField) {
       onSaveField(fieldData);
     }
-    onClose();
+    handleCloseModal();
   };
 
   const handleFindBuyersAction = () => {
@@ -579,7 +654,7 @@ export default function AddFieldModal({ isOpen, onClose, onSaveField, onFindBuye
           </div>
 
           <button
-            onClick={onClose}
+            onClick={handleCloseModal}
             className="p-2 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
             aria-label="Close"
           >

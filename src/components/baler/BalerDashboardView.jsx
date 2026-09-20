@@ -37,7 +37,7 @@ export default function BalerDashboardView({ onNavigate }) {
       fieldLocation: 'Ludhiana, Punjab',
       crop: 'Paddy Straw',
       estimatedTonnes: 5.2,
-      distance: '8.4 km',
+      distance: '8.4 km (by road)',
       pickupDate: 'Tomorrow',
       destinationPlant: 'Ludhiana CBG Plant',
       collectionPayment: 2100,
@@ -46,22 +46,22 @@ export default function BalerDashboardView({ onNavigate }) {
     },
     {
       id: 'JOB-MGA08',
-      fieldLocation: 'Moga South, Punjab',
+      fieldLocation: 'Dharamkot, Moga',
       crop: 'Paddy Straw',
       estimatedTonnes: 6.8,
-      distance: '9.4 km',
+      distance: '16.5 km (by road)',
       pickupDate: 'Tomorrow Morning',
-      destinationPlant: 'Ludhiana CBG Plant',
+      destinationPlant: 'Moga Biomass Facility',
       collectionPayment: 2720,
       farmer: 'Harinder Gill',
       contact: '+91 98765 22033'
     },
     {
       id: 'JOB-SGR14',
-      fieldLocation: 'Sangrur Central, Punjab',
+      fieldLocation: 'Sunam Central, Punjab',
       crop: 'Paddy Straw',
       estimatedTonnes: 5.0,
-      distance: '11.2 km',
+      distance: '15.9 km (by road)',
       pickupDate: 'Oct 12',
       destinationPlant: 'Sangrur Bio-Energy',
       collectionPayment: 2000,
@@ -73,7 +73,7 @@ export default function BalerDashboardView({ onNavigate }) {
       fieldLocation: 'Jagraon West, Punjab',
       crop: 'Paddy Straw',
       estimatedTonnes: 4.8,
-      distance: '6.5 km',
+      distance: '41.9 km (by road)',
       pickupDate: 'Oct 13',
       destinationPlant: 'Ludhiana CBG Plant',
       collectionPayment: 1920,
@@ -493,7 +493,7 @@ export default function BalerDashboardView({ onNavigate }) {
                       </div>
 
                       <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                        <span className="text-[10px] uppercase font-bold text-slate-400 block">Haul Distance</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block">Roadway Haul</span>
                         <span className="text-sm font-black font-mono text-slate-900 mt-0.5 block">
                           {job.distance}
                         </span>

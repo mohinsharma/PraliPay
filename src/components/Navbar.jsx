@@ -3,7 +3,7 @@ import { ArrowRight, Menu, X } from 'lucide-react';
 import Logo from './Logo';
 import LocationSelector from './LocationSelector';
 
-export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation }) {
+export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation, onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,6 +37,10 @@ export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation })
           <div className="flex items-center gap-3">
             <a
               href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('landing');
+              }}
               className="flex items-center group focus:outline-none"
               aria-label="ਪਰਾਲੀPay Home"
             >
@@ -56,22 +60,28 @@ export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation })
               How It Works
             </button>
             <button
-              onClick={() => scrollTo('for-farmers')}
-              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1"
+              onClick={() => onNavigate ? onNavigate('farmer') : scrollTo('farmer-dashboard')}
+              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1 font-semibold"
             >
-              For Farmers
+              👨‍🌾 For Farmers
             </button>
             <button
-              onClick={() => scrollTo('baler-dashboard')}
-              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1"
+              onClick={() => onNavigate ? onNavigate('baler') : scrollTo('baler-dashboard')}
+              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1 font-semibold"
             >
-              For Balers
+              🚜 For Balers
             </button>
             <button
-              onClick={() => scrollTo('for-plants')}
-              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1"
+              onClick={() => onNavigate ? onNavigate('plant') : scrollTo('for-plants')}
+              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1 font-semibold"
             >
-              For Plants
+              🏭 For Plants
+            </button>
+            <button
+              onClick={() => onNavigate ? onNavigate('procurement') : scrollTo('punjab-network')}
+              className="hover:text-emerald-800 transition-colors py-1 cursor-pointer flex items-center gap-1 font-semibold text-slate-700 hover:text-emerald-900"
+            >
+              🏢 Coordinator
             </button>
             <button
               onClick={() => scrollTo('punjab-network')}
@@ -83,7 +93,14 @@ export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation })
           </nav>
 
           {/* Right CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => onOpenRoleModal('farmer')}
+              id="nav-login-btn"
+              className="text-sm font-semibold text-slate-700 hover:text-emerald-800 transition-colors cursor-pointer px-3 py-2"
+            >
+              Sign In
+            </button>
             <button
               onClick={() => onOpenRoleModal()}
               id="nav-get-started-btn"
@@ -125,22 +142,40 @@ export default function Navbar({ onOpenRoleModal, onSelectUnavailableLocation })
             How It Works
           </button>
           <button
-            onClick={() => scrollTo('for-farmers')}
-            className="block w-full text-left py-2 text-base font-medium text-slate-700 hover:text-emerald-700"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              if (onNavigate) onNavigate('farmer');
+            }}
+            className="block w-full text-left py-2 text-base font-semibold text-emerald-800 hover:text-emerald-900"
           >
-            For Farmers
+            👨‍🌾 Farmer Dashboard
           </button>
           <button
-            onClick={() => scrollTo('baler-dashboard')}
-            className="block w-full text-left py-2 text-base font-medium text-slate-700 hover:text-emerald-700"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              if (onNavigate) onNavigate('baler');
+            }}
+            className="block w-full text-left py-2 text-base font-semibold text-amber-800 hover:text-amber-900"
           >
-            For Balers
+            🚜 Baler Dashboard
           </button>
           <button
-            onClick={() => scrollTo('for-plants')}
-            className="block w-full text-left py-2 text-base font-medium text-slate-700 hover:text-emerald-700"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              if (onNavigate) onNavigate('plant');
+            }}
+            className="block w-full text-left py-2 text-base font-semibold text-slate-800 hover:text-slate-900"
           >
-            For Plants
+            🏭 Plant Dashboard
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              if (onNavigate) onNavigate('procurement');
+            }}
+            className="block w-full text-left py-2 text-base font-semibold text-emerald-800 hover:text-emerald-900"
+          >
+            🏢 Coordinator HQ
           </button>
           <button
             onClick={() => scrollTo('punjab-network')}

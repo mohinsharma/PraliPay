@@ -21,6 +21,8 @@ import {
   AlertCircle
 } from 'lucide-react';
 
+import DispatchRouteMap from './DispatchRouteMap';
+
 export default function BalerDashboardView({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'available' | 'myjobs' | 'route' | 'earnings' | 'profile'
   const [availableCount, setAvailableCount] = useState(12);
@@ -578,66 +580,37 @@ export default function BalerDashboardView({ onNavigate }) {
             </div>
           </section>
 
-          {/* ROUTE / MAP & EARNINGS PREVIEW */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Route / Map Preview */}
-            <div id="baler-route-map" className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-base font-extrabold text-slate-900">Dispatch Route / Punjab Map</h3>
-                  <span className="text-xs text-slate-500">Optimized turn-by-turn cluster route</span>
-                </div>
-                <Navigation className="w-5 h-5 text-amber-600" />
-              </div>
+          {/* DISPATCH ROUTE & SHORTEST PATH GOOGLE MAP */}
+          <DispatchRouteMap activeJob={myJobs[0]} />
 
-              <div className="h-56 rounded-2xl bg-slate-900 border border-slate-800 relative overflow-hidden flex items-center justify-center text-center p-4">
-                <div 
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage: 'radial-gradient(#f59e0b 1px, transparent 1px)',
-                    backgroundSize: '20px 20px'
-                  }}
-                />
-                <div className="relative z-10 text-white">
-                  <MapPin className="w-8 h-8 text-amber-400 mx-auto mb-2 animate-bounce" />
-                  <div className="text-sm font-extrabold">Active Cluster Route #04</div>
-                  <div className="text-xs text-slate-400 mt-1">Ludhiana West → Jagraon → Ludhiana CBG Plant</div>
-                  <span className="inline-block mt-3 text-[11px] font-bold bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full border border-amber-400/30">
-                    Total Haul: 18.2 km · Fuel Optimized
-                  </span>
-                </div>
+          {/* EARNINGS PREVIEW */}
+          <div id="baler-earnings" className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-xs">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-base font-extrabold text-slate-900">Baler Revenue & Escrow</h3>
+                <span className="text-xs text-slate-500">Fixed rate ₹1,400 / tonne baling fee</span>
+              </div>
+              <IndianRupee className="w-5 h-5 text-emerald-600" />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="p-3.5 rounded-xl bg-slate-50 flex justify-between items-center border border-slate-100">
+                <span className="text-slate-600">Today's Collections:</span>
+                <span className="font-mono font-bold text-slate-900">6.0 t (₹8,400)</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-slate-50 flex justify-between items-center border border-slate-100">
+                <span className="text-slate-600">In-Transit Pipeline:</span>
+                <span className="font-mono font-bold text-slate-900">18.6 t (₹26,040)</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex justify-between items-center">
+                <span className="text-emerald-900 font-bold">Weekly Escrow:</span>
+                <span className="text-lg font-black font-mono text-emerald-900">₹34,440</span>
               </div>
             </div>
 
-            {/* Earnings Breakdown */}
-            <div id="baler-earnings" className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-base font-extrabold text-slate-900">Baler Revenue & Escrow</h3>
-                  <span className="text-xs text-slate-500">Fixed rate ₹1,400 / tonne baling fee</span>
-                </div>
-                <IndianRupee className="w-5 h-5 text-emerald-600" />
-              </div>
-
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-slate-50 flex justify-between">
-                  <span className="text-slate-600">Today's Completed Collections:</span>
-                  <span className="font-mono font-bold text-slate-900">6.0 tonnes (₹8,400)</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-50 flex justify-between">
-                  <span className="text-slate-600">In-Transit Pipeline:</span>
-                  <span className="font-mono font-bold text-slate-900">18.6 tonnes (₹26,040)</span>
-                </div>
-                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex justify-between items-center">
-                  <span className="text-emerald-900 font-bold">Total Weekly Escrow Payout:</span>
-                  <span className="text-lg font-black font-mono text-emerald-900">₹34,440</span>
-                </div>
-              </div>
-
-              <div className="mt-4 text-[11px] text-slate-500 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Instant automated release upon plant weighbridge QR scan</span>
-              </div>
+            <div className="mt-4 text-[11px] text-slate-500 flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Instant automated release upon plant weighbridge QR scan</span>
             </div>
           </div>
 

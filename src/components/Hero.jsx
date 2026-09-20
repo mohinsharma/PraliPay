@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, ChevronRight, Sparkles, ShieldCheck, TrendingUp, Zap } from 'lucide-react';
 import HeroMapVisual from './HeroMapVisual';
+import WheatAnimation from './WheatAnimation';
 
 export default function Hero({ onOpenRoleModal }) {
   const scrollToHowItWorks = () => {
@@ -17,11 +18,11 @@ export default function Hero({ onOpenRoleModal }) {
         <div className="absolute bottom-10 left-1/3 w-80 h-80 bg-emerald-100/20 rounded-full blur-2xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative">
           
           {/* Left Column: Value Proposition & CTAs */}
-          <div className="lg:col-span-6 flex flex-col items-start text-left">
+          <div className="lg:col-span-6 flex flex-col items-start text-left relative z-10">
             
             {/* Top Location & Tagline Pill */}
             <div className="flex flex-wrap items-center gap-2.5 mb-6">
@@ -85,8 +86,16 @@ export default function Hero({ onOpenRoleModal }) {
           </div>
 
           {/* Right Column: Hero Centerpiece Visualization */}
-          <div className="lg:col-span-6 w-full">
+          <div className="lg:col-span-6 w-full relative z-10">
             <HeroMapVisual />
+          </div>
+
+          {/* Dynamic Scroll-Linked Botanical Wheat Animation */}
+          <div 
+            className="absolute -bottom-8 right-0 sm:right-6 lg:left-[48%] lg:-translate-x-1/2 lg:right-auto w-[180px] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[400px] sm:h-[480px] md:h-[540px] lg:h-[600px] pointer-events-none z-0 opacity-45 sm:opacity-65 lg:opacity-95"
+            aria-hidden="true"
+          >
+            <WheatAnimation className="w-full h-full" />
           </div>
 
         </div>
